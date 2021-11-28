@@ -1,7 +1,10 @@
 package com.example.jwt.controller;
 
+import java.io.IOException;
+
 import com.example.jwt.entity.JwtRequest;
 import com.example.jwt.entity.JwtResponse;
+import com.example.jwt.entity.OAuthException;
 import com.example.jwt.model.User;
 import com.example.jwt.service.UserService;
 import com.example.jwt.utility.GoogleOAuthUtility;
@@ -28,7 +31,8 @@ public class HomeController {
 	}
 
 	@PostMapping("/authenticate")
-	public JwtResponse authenticate(@RequestBody JwtRequest jwtRequest) throws Exception {
+	// TODO : exception handling
+	public JwtResponse authenticate(@RequestBody JwtRequest jwtRequest) throws IOException, OAuthException {
 
 		GoogleOAuthUtility gAuth = new GoogleOAuthUtility();
 		User user = gAuth.verifyUserFromIdToken(jwtRequest.getIdToken());

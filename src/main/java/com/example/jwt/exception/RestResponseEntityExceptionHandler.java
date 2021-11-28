@@ -19,6 +19,8 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
 		Integer exceptionStatus = exception.getStatusCode();
 
+		// TODO : handle exception for all status code
+		
 		if (exceptionStatus == 400) {
 			ErrorMessage errorMessage = new ErrorMessage(HttpStatus.BAD_REQUEST, exception.getMessage());
 			return ResponseEntity.status(errorMessage.getStatus()).body(errorMessage);

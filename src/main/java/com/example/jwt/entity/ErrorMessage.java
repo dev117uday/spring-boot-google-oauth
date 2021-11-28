@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+// TODO : remove this class
 public class ErrorMessage {
 
     private HttpStatus status;

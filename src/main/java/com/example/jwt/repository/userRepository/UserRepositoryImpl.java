@@ -17,6 +17,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public void insertUser(User user) {
         String sql = "INSERT INTO public.oauthuser(sub, email) VALUES (?, ?) on conflict do nothing;";
+        // TODO : data access Exception
         jdbcTemplate.update(sql, user.getSub(), user.getEmail());
     }
 

@@ -29,6 +29,7 @@ public class JwtFilter extends OncePerRequestFilter {
 	@Autowired
 	private UserService userService;
 
+	// TODO :  proper exception handling
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
@@ -42,7 +43,7 @@ public class JwtFilter extends OncePerRequestFilter {
 			try {
 				username = jwtUtility.getUserIdFromToken(token);
 			} catch (OAuthException e) {
-				
+				System.out.println("invalid jwt");
 			}
 		}
 

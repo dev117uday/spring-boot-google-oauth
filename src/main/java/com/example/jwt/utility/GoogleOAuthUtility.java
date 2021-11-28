@@ -27,11 +27,15 @@ public class GoogleOAuthUtility {
 				.method("GET", null)
 				.build();
 		Response response = client.newCall(request).execute();
+
+		// TODO : tc for .execute();
 		
 		String userInfoString = response.body().string();
-		int responseCode = response.code();
+		Integer responseCode = response.code();
 
 		response.close();
+
+		// TODO : error handling acc. to status code
 		
 		if(responseCode/100 == 4) {
 			throw new OAuthException("invalid id token", 400);
@@ -39,6 +43,8 @@ public class GoogleOAuthUtility {
 
 		Gson gson = new Gson();
 		User user = gson.fromJson(userInfoString, User.class);
+		
+		// TODO : JSON syntax error
 
 		return user;
 	}

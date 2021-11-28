@@ -26,6 +26,8 @@ public class UserService implements UserDetailsService {
 		return new User(username, "", new ArrayList<>());
 	}
 
+	// TODO : break out service to user service repo
+
 	public void insertUserService(com.example.jwt.model.User user){
 		userRepository.insertUser(user);
 	}
