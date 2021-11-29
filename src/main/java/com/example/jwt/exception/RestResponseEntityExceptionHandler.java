@@ -1,6 +1,5 @@
 package com.example.jwt.exception;
 
-import com.example.jwt.entity.ErrorMessage;
 import com.example.jwt.entity.OAuthException;
 
 import org.springframework.http.HttpStatus;
@@ -15,19 +14,14 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(OAuthException.class)
-	public ResponseEntity<ErrorMessage> ResponseEntityExceptionHandler(OAuthException exception) {
+	public ResponseEntity<String> ResponseEntityExceptionHandler(OAuthException exception) {
 
 		Integer exceptionStatus = exception.getStatusCode();
-
 		// TODO : handle exception for all status code
-		
 		if (exceptionStatus == 400) {
-			ErrorMessage errorMessage = new ErrorMessage(HttpStatus.BAD_REQUEST, exception.getMessage());
-			return ResponseEntity.status(errorMessage.getStatus()).body(errorMessage);
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("bad request");
 		}
-
-		ErrorMessage errorMessage = new ErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR, "stupid programmer");
-		return ResponseEntity.status(errorMessage.getStatus()).body(errorMessage);
-
+		
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("stupid programmer");
 	}
 }

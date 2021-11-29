@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class JwtRequest {
-	
-	// TODO : add username field 
+
 	private String idToken;
+	private String userName;
 
 }
