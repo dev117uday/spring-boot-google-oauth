@@ -2,10 +2,12 @@ package com.example.jwt.utility;
 
 import java.io.IOException;
 
-import com.example.jwt.entity.OAuthException;
+import com.example.jwt.exception.ExceptionBroker;
 import com.example.jwt.model.User;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import okhttp3.OkHttpClient;
@@ -15,8 +17,8 @@ import okhttp3.Response;
 @Component
 public class GoogleOAuthUtility {
 
-	public User verifyUserFromIdToken(String idToken) throws IOException, OAuthException {
-		
+	public User verifyUserFromIdToken(String idToken) throws ExceptionBroker {
+
 		OkHttpClient client = new OkHttpClient().newBuilder()
 				.build();
 
@@ -26,25 +28,31 @@ public class GoogleOAuthUtility {
 				.url(url)
 				.method("GET", null)
 				.build();
-		Response response = client.newCall(request).execute();
 
-		// TODO : tc for .execute();
-		
-		String userInfoString = response.body().string();
-		Integer responseCode = response.code();
+		String userInfoString;
+		Integer responseCode;
 
-		response.close();
-
-		// TODO : error handling acc. to status code
-		
-		if(responseCode/100 == 4) {
-			throw new OAuthException("invalid id token", 400);
+		try {
+			Response response = client.newCall(request).execute();
+			userInfoString = response.body().string();
+			responseCode = response.code();
+			response.close();
+		} catch (IOException e) {
+			throw new ExceptionBroker("internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
-		Gson gson = new Gson();
-		User user = gson.fromJson(userInfoString, User.class);
-		
-		// TODO : JSON syntax error
+		if (responseCode / 100 == 4) {
+			throw new ExceptionBroker("invalid id token", HttpStatus.BAD_REQUEST);
+		}
+
+		User user;
+
+		try {
+			Gson gson = new Gson();
+			user = gson.fromJson(userInfoString, User.class);
+		} catch (JsonSyntaxException e) {
+			throw new ExceptionBroker("internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 
 		return user;
 	}

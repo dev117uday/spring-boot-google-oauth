@@ -7,7 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.example.jwt.entity.OAuthException;
+import com.example.jwt.exception.ExceptionBroker;
 import com.example.jwt.service.UserService;
 import com.example.jwt.utility.JWTUtility;
 
@@ -29,7 +29,6 @@ public class JwtFilter extends OncePerRequestFilter {
 	@Autowired
 	private UserService userService;
 
-	// TODO :  proper exception handling
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
@@ -42,8 +41,8 @@ public class JwtFilter extends OncePerRequestFilter {
 			token = authorization.substring(7);
 			try {
 				username = jwtUtility.getUserIdFromToken(token);
-			} catch (OAuthException e) {
-				System.out.println("invalid jwt");
+			} catch (ExceptionBroker e) {
+				throw new ServletException("invalid jwt");
 			}
 		}
 
@@ -60,8 +59,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
 				SecurityContextHolder.getContext().setAuthentication((usernamePasswordAuthenticationToken));
 			}
-		} catch (UsernameNotFoundException | OAuthException e) {
-			System.out.println("invalid jwt");
+		} catch (UsernameNotFoundException | ExceptionBroker e) {
+			throw new ServletException("invalid jwt");
 		}
 
 		filterChain.doFilter(request, response);
