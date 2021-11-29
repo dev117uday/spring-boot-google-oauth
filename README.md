@@ -7,6 +7,7 @@ All code written in this repo is me hacking together things i know from the inte
 - create a file in `application.yml` in `src/main/resources` folder
 
 ```s
+mkdir src/main/resources 
 touch src/main/resources/application.yml
 ```
 
