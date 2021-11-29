@@ -4,6 +4,6 @@ import com.example.jwt.model.User;
 
 public interface UserRepository {
 
-    void insertUser(User user);
+    Boolean insertUser(User user, String userName);
 
 }

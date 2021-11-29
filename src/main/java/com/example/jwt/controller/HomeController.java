@@ -1,12 +1,10 @@
 package com.example.jwt.controller;
 
-import java.io.IOException;
-
 import com.example.jwt.entity.JwtRequest;
 import com.example.jwt.entity.JwtResponse;
-import com.example.jwt.entity.OAuthException;
+import com.example.jwt.exception.ExceptionBroker;
 import com.example.jwt.model.User;
-import com.example.jwt.service.UserService;
+import com.example.jwt.service.UserServiceToRepo;
 import com.example.jwt.utility.GoogleOAuthUtility;
 import com.example.jwt.utility.JWTUtility;
 
@@ -19,11 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HomeController {
 
-	@Autowired
+	
 	private JWTUtility jwtUtility;
+	private UserServiceToRepo userServicetRepo;
 
 	@Autowired
-	private UserService userService;
+	public HomeController(JWTUtility jwtUtility, UserServiceToRepo userServicetRepo) {
+		this.jwtUtility = jwtUtility;
+		this.userServicetRepo = userServicetRepo;
+	}
 
 	@GetMapping("/")
 	public String basicControllerString() {
@@ -31,16 +33,14 @@ public class HomeController {
 	}
 
 	@PostMapping("/authenticate")
-	// TODO : exception handling
-	public JwtResponse authenticate(@RequestBody JwtRequest jwtRequest) throws IOException, OAuthException {
+	public JwtResponse authenticate(@RequestBody JwtRequest jwtRequest) throws ExceptionBroker {
 
 		GoogleOAuthUtility gAuth = new GoogleOAuthUtility();
 		User user = gAuth.verifyUserFromIdToken(jwtRequest.getIdToken());
 
-		userService.insertUserService(user);
+		userServicetRepo.insertUserService(user, jwtRequest.getUserName());
 
 		final String token = jwtUtility.generateToken(user);
-		
 		return new JwtResponse(token);
 	}
 
