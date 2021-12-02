@@ -14,18 +14,28 @@ touch src/main/resources/application.yml
 - Paste the following with correct info
 
 ```yml
+spring:
+  datasource:
+    url: jdbc:postgresql://<hostt>:<port>/<db>
+    username: <user>
+    password: <password>
+
+  jpa:
+   hibernate.ddl-auto: update
+   show-sql: true
+   properties:
+     hibernate:
+       dialect: org.hibernate.dialect.PostgreSQLDialect
+
 app:
   cors:
-    allowedOrigins: http://localhost:5000
+    allowedOrigins: <frontend url>
 
   jwt:
     secret_key: <jwt secret key>
 
-  datasource:
-    main:
-      driver-class-name: org.postgresql.Driver
-      jdbc-url: jdbc:postgresql://<address>:<port>/<db name>
-      username: <db user name>
-      password: <db user password>
-      pool-size: <pool size>
+
+server:
+  error:
+    include-message: always
 ```

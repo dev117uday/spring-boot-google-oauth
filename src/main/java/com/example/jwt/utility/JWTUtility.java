@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 import com.example.jwt.exception.ExceptionBroker;
-import com.example.jwt.model.User;
+import com.example.jwt.model.Users;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -61,7 +61,7 @@ public class JWTUtility implements Serializable {
     }
 
     // generate token for user
-    public String generateToken(User userDetails) {
+    public String generateToken(Users userDetails) {
         Map<String, Object> claims = new HashMap<>();
         return doGenerateToken(claims, userDetails.getSub());
     }

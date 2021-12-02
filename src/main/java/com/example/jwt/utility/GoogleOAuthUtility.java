@@ -3,7 +3,7 @@ package com.example.jwt.utility;
 import java.io.IOException;
 
 import com.example.jwt.exception.ExceptionBroker;
-import com.example.jwt.model.User;
+import com.example.jwt.model.Users;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -17,7 +17,7 @@ import okhttp3.Response;
 @Component
 public class GoogleOAuthUtility {
 
-	public User verifyUserFromIdToken(String idToken) throws ExceptionBroker {
+	public Users verifyUserFromIdToken(String idToken) throws ExceptionBroker {
 
 		OkHttpClient client = new OkHttpClient().newBuilder()
 				.build();
@@ -45,11 +45,11 @@ public class GoogleOAuthUtility {
 			throw new ExceptionBroker("invalid id token", HttpStatus.BAD_REQUEST);
 		}
 
-		User user;
+		Users user;
 
 		try {
 			Gson gson = new Gson();
-			user = gson.fromJson(userInfoString, User.class);
+			user = gson.fromJson(userInfoString, Users.class);
 		} catch (JsonSyntaxException e) {
 			throw new ExceptionBroker("internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
 		}

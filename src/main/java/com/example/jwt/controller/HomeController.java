@@ -3,7 +3,7 @@ package com.example.jwt.controller;
 import com.example.jwt.entity.JwtRequest;
 import com.example.jwt.entity.JwtResponse;
 import com.example.jwt.exception.ExceptionBroker;
-import com.example.jwt.model.User;
+import com.example.jwt.model.Users;
 import com.example.jwt.service.UserServiceToRepo;
 import com.example.jwt.utility.GoogleOAuthUtility;
 import com.example.jwt.utility.JWTUtility;
@@ -36,7 +36,7 @@ public class HomeController {
 	public JwtResponse authenticate(@RequestBody JwtRequest jwtRequest) throws ExceptionBroker {
 
 		GoogleOAuthUtility gAuth = new GoogleOAuthUtility();
-		User user = gAuth.verifyUserFromIdToken(jwtRequest.getIdToken());
+		Users user = gAuth.verifyUserFromIdToken(jwtRequest.getIdToken());
 
 		userServicetRepo.insertUserService(user, jwtRequest.getUserName());
 
