@@ -14,9 +14,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
 
 @Component
 public class JWTUtility implements Serializable {
@@ -50,6 +53,14 @@ public class JWTUtility implements Serializable {
             return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
         } catch (SignatureException e) {
             throw new ExceptionBroker("invalid jwt", HttpStatus.BAD_REQUEST);
+        } catch (ExpiredJwtException e) {
+            throw new ExceptionBroker("expried jwt", HttpStatus.BAD_REQUEST);
+        } catch (MalformedJwtException e) {
+            throw new ExceptionBroker("malformed jwt", HttpStatus.BAD_REQUEST);
+        } catch (UnsupportedJwtException e) {
+            throw new ExceptionBroker("unsupported jwt", HttpStatus.BAD_REQUEST);
+        } catch (IllegalArgumentException e) {
+            throw new ExceptionBroker("bad jwt", HttpStatus.BAD_REQUEST);
         }
 
     }

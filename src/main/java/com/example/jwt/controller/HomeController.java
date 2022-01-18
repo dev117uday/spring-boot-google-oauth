@@ -1,7 +1,7 @@
 package com.example.jwt.controller;
 
-import com.example.jwt.entity.JwtRequest;
-import com.example.jwt.entity.JwtResponse;
+import com.example.jwt.dto.JwtRequest;
+import com.example.jwt.dto.JwtResponse;
 import com.example.jwt.exception.ExceptionBroker;
 import com.example.jwt.model.Users;
 import com.example.jwt.service.UserServiceToRepo;
